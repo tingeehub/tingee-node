@@ -8,8 +8,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc && npm run copy-declarations",
-    "copy-declarations": "copyfiles -u 2 src/client/generated-methods.d.ts dist/client",
+    "build": "tsc",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -18,9 +17,22 @@
     "payment",
     "api"
   ],
-  "author": "",
+  "author": {
+    "name": "Tingee",
+    "email": "developer@heno.vn",
+    "url": "https://tingee.vn"
+  },
+  "funding": {
+    "type": "other",
+    "url": "https://t.me/tingeesupport"
+  },
   "license": "ISC",
   "description": "Tingee Open API SDK for Node.js",
+  "homepage": "https://developers.tingee.vn",
+  "bugs": {
+    "url": "https://developers.tingee.vn",
+    "email": "developer@heno.vn"
+  },
   "engines": {
     "node": ">=18.0.0"
   },

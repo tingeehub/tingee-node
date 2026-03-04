@@ -1,6 +1,4 @@
 import { generateSignature, formatTimestamp } from '../signature/signer.js'
-import type { TingeeApiResponse } from '../types/api-response.js'
-import { isErrorResponse } from '../types/api-response.js'
 
 /**
  * HTTP method types
@@ -51,12 +49,20 @@ export class TingeeHttpClient {
   }
 
   async request<T = any>(options: HttpRequestOptions): Promise<HttpResponse<T>> {
-    const { method, path, body, headers = {}, timeout } = options
+    const { method, path, body, headers = {}, timeout, query } = options
 
     const timestamp = formatTimestamp()
     const signature = generateSignature(this.secretKey, timestamp, body || {})
 
-    const url = `${this.baseUrl}${path.startsWith('/') ? path : `/${path}`}`
+    const basePath = path.startsWith('/') ? path : `/${path}`
+    const qs = query && Object.keys(query).length > 0
+      ? '?' + new URLSearchParams(
+        Object.fromEntries(
+          Object.entries(query).filter(([, v]) => v !== undefined && v !== null && v !== '')
+        ) as Record<string, string>
+      ).toString()
+      : ''
+    const url = `${this.baseUrl}${basePath}${qs}`
 
     const requestHeaders: Record<string, string> = {
       'accept': 'application/json',
@@ -85,7 +91,7 @@ export class TingeeHttpClient {
 
       let data: T
       const contentType = response.headers.get('content-type') || ''
-      
+
       if (contentType.includes('application/json')) {
         data = (await response.json()) as T
       } else {
@@ -104,24 +110,6 @@ export class TingeeHttpClient {
           data,
           responseHeaders
         )
-      }
-
-      if (
-        typeof data === 'object' &&
-        data !== null &&
-        'code' in data &&
-        'message' in data
-      ) {
-        const apiResponse = data as unknown as TingeeApiResponse
-        if (isErrorResponse(apiResponse)) {
-          throw new TingeeApiError(
-            apiResponse.message || 'API request failed',
-            apiResponse.code,
-            apiResponse,
-            response.status,
-            responseHeaders
-          )
-        }
       }
 
       return {
@@ -164,18 +152,5 @@ export class TingeeHttpError extends Error {
   ) {
     super(message)
     this.name = 'TingeeHttpError'
-  }
-}
-
-export class TingeeApiError extends Error {
-  constructor(
-    message: string,
-    public code: string,
-    public response: TingeeApiResponse,
-    public status: number,
-    public headers: Record<string, string>
-  ) {
-    super(message)
-    this.name = 'TingeeApiError'
   }
 }
