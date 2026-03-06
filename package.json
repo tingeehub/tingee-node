@@ -26,6 +26,9 @@
     "type": "other",
     "url": "https://t.me/tingeesupport"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "license": "ISC",
   "description": "Tingee Open API SDK for Node.js",
   "homepage": "https://developers.tingee.vn",
