@@ -59,11 +59,11 @@ export interface WebhookVerifyInput {
   /** Value of the `x-request-timestamp` header from the incoming webhook request */
   timestamp: string
   /**
-   * The parsed JSON body of the incoming webhook request.
-   * Pass the already-parsed object — the function will JSON.stringify it
-   * the same way the server does before comparing signatures.
+   * The JSON body of the incoming webhook request.
+   * Can be passed as an already-parsed object OR as a raw JSON string —
+   * if a string is passed it will be parsed automatically.
    */
-  body: Record<string, any>
+  body: Record<string, any> | string
 }
 
 /**
@@ -106,17 +106,29 @@ export function verifyWebhookSignature(input: WebhookVerifyInput): WebhookVerify
   if (!TIMESTAMP_REGEX.test(timestamp)) {
     return { code: 'INVALID_TIMESTAMP', message: 'x-request-timestamp must be in yyyyMMddHHmmssSSS format (17 digits)' }
   }
-  if (!body || typeof body !== 'object') {
+  // Parse body if it was passed as a raw JSON string
+  let parsedBody: Record<string, any>
+  if (typeof body === 'string') {
+    try {
+      parsedBody = JSON.parse(body)
+    } catch {
+      return { code: 'INVALID_BODY', message: 'body string is not valid JSON' }
+    }
+  } else {
+    parsedBody = body
+  }
+
+  if (!parsedBody || typeof parsedBody !== 'object') {
     return { code: 'MISSING_BODY', message: 'body is required and must be an object' }
   }
 
   for (const field of REQUIRED_BODY_FIELDS) {
-    if (!body[field]) {
+    if (!parsedBody[field]) {
       return { code: `MISSING_BODY_FIELD`, message: `body.${field} is required` }
     }
   }
 
-  const expected = generateSignature(secretToken, timestamp, body)
+  const expected = generateSignature(secretToken, timestamp, parsedBody)
 
   try {
     const expectedBuf = Buffer.from(expected, 'hex')

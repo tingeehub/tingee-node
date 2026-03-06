@@ -29,12 +29,12 @@ import { TingeeClient, isSuccessResponse } from '@tingee/sdk-node'
 const client = new TingeeClient({
   secretKey:   process.env.TINGEE_SECRET_KEY!,
   clientId:    process.env.TINGEE_CLIENT_ID!,
-  environment: 'uat', // 'uat' | 'production' mặc định 'uat'
-  timeout: 90000, // mặc định 90s
-  baseUrl: 'https://uat-open-api.tingee.vn', // tùy chọn, ghi đè Environment
+  environment: 'production', // 'uat' | 'production', mặc định 'production'
+  timeout: 90000,            // mặc định 90s
+  baseUrl: 'https://uat-open-api.tingee.vn', // tùy chọn, ghi đè environment
 })
 
-const result = await client.v1.merchantGetPaging({ maxResultCount: 10, skipCount: 0 });
+const result = await client.merchant.getPaging({ maxResultCount: 10, skipCount: 0 })
 if (isSuccessResponse(result)) {
   console.log(result.data)
 } else {
@@ -50,7 +50,7 @@ if (isSuccessResponse(result)) {
 |---|---|---|---|
 | `secretKey` | `string` | — | **Bắt buộc.** Secret key từ Tingee Dashboard |
 | `clientId` | `string` | — | **Bắt buộc.** Client ID từ Tingee Dashboard |
-| `environment` | `'uat' \| 'production'` | `'uat'` | Môi trường API |
+| `environment` | `'uat' \| 'production'` | `'production'` | Môi trường API |
 | `baseUrl` | `string` | — | Ghi đè URL (bỏ qua `environment`) |
 | `timeout` | `number` | `90000` | Timeout (ms) |
 
@@ -58,24 +58,29 @@ if (isSuccessResponse(result)) {
 
 ## Gọi API
 
-Tất cả phương thức nằm trong `client.v1.*`:
+Tất cả phương thức nằm trong `client.*`:
 
 ```ts
-// Lấy danh sách shop (có phân trang)
-const result = await client.v1.shopGetPaging({ maxResultCount: 10, skipCount: 0 })
+// Merchant — lấy danh sách
+const result = await client.merchant.getPaging({ maxResultCount: 10, skipCount: 0 })
 if (isSuccessResponse(result)) {
-  result.data.items.forEach(s => console.log(s.name))
+  result.data.items.forEach(m => console.log(m.name))
 }
 
+// Shop — lấy danh sách
+const shops = await client.shop.getPaging({ maxResultCount: 10, skipCount: 0 })
+
 // Direct Debit
-const sub = await client.v1.directDebitGetSubscriptionStatus({
-  requestId:     'uuid-here',
+const sub = await client.directDebit.getSubscriptionStatus({
+  requestId:      'uuid-here',
   subscriptionId: 'uuid-here',
-  tokenRef:      'token-ref',
+  tokenRef:       'token-ref',
 })
 ```
 
 > **Lưu ý:** SDK trả về `TingeeApiResponse` với `code` và `message`. Kiểm tra `code === '00'` hoặc `isSuccessResponse(result)` để xác định thành công — SDK **không tự throw** khi `code !== '00'`.
+
+---
 
 ## Xác thực Webhook
 
