@@ -9,6 +9,7 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    environment: release
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
       - uses: actions/checkout@v4
@@ -20,6 +21,27 @@ jobs:
 
       - run: npm ci
       - run: npm run build
-      - run: npm publish --tag beta --access public
+
+      # Auto-detect dist-tag from version:
+      #   v1.0.0-beta.1  → --tag beta
+      #   v1.0.0-next.1  → --tag next
+      #   v1.0.0-alpha.1 → --tag alpha
+      #   v1.0.0         → --tag latest (default)
+      - name: Publish to npm
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if echo "$VERSION" | grep -qE '\-beta'; then
+            TAG="beta"
+          elif echo "$VERSION" | grep -qE '\-next'; then
+            TAG="next"
+          elif echo "$VERSION" | grep -qE '\-alpha'; then
+            TAG="alpha"
+          elif echo "$VERSION" | grep -qE '\-rc'; then
+            TAG="rc"
+          else
+            TAG="latest"
+          fi
+          echo "Publishing version $VERSION with tag: $TAG"
+          npm publish --tag $TAG --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
