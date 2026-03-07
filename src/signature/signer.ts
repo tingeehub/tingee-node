@@ -4,11 +4,6 @@ import { createHmac, timingSafeEqual } from 'crypto'
  * Generate signature for Tingee API request
  *
  * Signature format: HMAC-SHA512(secretKey, timestamp:JSON.stringify(body))
- *
- * @param secretKey - Secret key for HMAC
- * @param timestamp - Request timestamp in format yyyyMMddHHmmssSSS
- * @param body - Request body object (will be stringified)
- * @returns Hex-encoded signature string
  */
 export function generateSignature(
   secretKey: string,
@@ -24,13 +19,9 @@ export function generateSignature(
 /**
  * Format date to Tingee timestamp format: yyyyMMddHHmmssSSS
  * Always uses Vietnam timezone (UTC+7) regardless of machine timezone.
- *
- * @param date - Date object (defaults to now)
- * @returns Formatted timestamp string
  */
 export function formatTimestamp(date: Date = new Date()): string {
-  // Convert to Vietnam time (UTC+7) explicitly
-  const vnOffset = 7 * 60 // minutes
+  const vnOffset = 7 * 60
   const utcMs = date.getTime() + date.getTimezoneOffset() * 60 * 1000
   const vnDate = new Date(utcMs + vnOffset * 60 * 1000)
 
@@ -43,6 +34,28 @@ export function formatTimestamp(date: Date = new Date()): string {
   const milliseconds = String(date.getMilliseconds()).padStart(3, '0')
 
   return `${year}${month}${day}${hours}${minutes}${seconds}${milliseconds}`
+}
+
+// ─── Webhook body types ───────────────────────────────────────────────────────
+
+export interface TingeeWebhookAdditionalData {
+  name: string
+  value: string
+}
+
+/** Shape of the JSON body sent by Tingee webhook callbacks */
+export interface TingeeWebhookBody {
+  clientId: string
+  transactionCode: string
+  amount: number
+  content?: string
+  bank: string
+  bankBin?: string
+  accountNumber: string
+  vaAccountNumber?: string
+  /** Format: yyyyMMddHHmmss */
+  transactionDate: string
+  additionalData?: TingeeWebhookAdditionalData[]
 }
 
 // ─── Webhook signature verification ─────────────────────────────────────────
@@ -60,18 +73,13 @@ export interface WebhookVerifyInput {
   timestamp: string
   /**
    * The JSON body of the incoming webhook request.
-   * Can be passed as an already-parsed object OR as a raw JSON string —
-   * if a string is passed it will be parsed automatically.
+   * Can be passed as an already-parsed object OR as a raw JSON string.
    */
-  body: Record<string, any> | string
+  body: TingeeWebhookBody | string
 }
 
 /**
  * Verify the HMAC-SHA512 signature of an incoming Tingee webhook callback.
- *
- * Server signing logic:
- *   message   = `${x-request-timestamp}:${JSON.stringify(body)}`
- *   signature = HMAC-SHA512(secretToken, message) → hex
  *
  * @example
  * ```ts
@@ -82,9 +90,7 @@ export interface WebhookVerifyInput {
  *     timestamp:   req.headers['x-request-timestamp'] as string,
  *     body:        req.body,
  *   })
- *   if (result.code !== '00') {
- *     return res.status(401).json(result)
- *   }
+ *   if (result.code !== '00') return res.status(401).json(result)
  *   // process webhook ...
  * })
  * ```
@@ -92,10 +98,18 @@ export interface WebhookVerifyInput {
 
 const TIMESTAMP_REGEX = /^\d{17}$/
 
-const REQUIRED_BODY_FIELDS = ['clientId', 'transactionCode', 'amount', 'bank', 'transactionDate'] as const
+// Required fields = fields without ? in WebhookBody
+const REQUIRED_BODY_FIELDS = [
+  'clientId',
+  'transactionCode',
+  'amount',
+  'bank',
+  'accountNumber',
+  'transactionDate',
+] as const
 
 export function verifyWebhookSignature(input: WebhookVerifyInput): WebhookVerifyResult {
-  const { secretToken, signature, timestamp, body } = input;
+  const { secretToken, signature, timestamp, body } = input
 
   if (!signature) {
     return { code: 'MISSING_SIGNATURE', message: 'x-signature header is required' }
@@ -106,8 +120,8 @@ export function verifyWebhookSignature(input: WebhookVerifyInput): WebhookVerify
   if (!TIMESTAMP_REGEX.test(timestamp)) {
     return { code: 'INVALID_TIMESTAMP', message: 'x-request-timestamp must be in yyyyMMddHHmmssSSS format (17 digits)' }
   }
-  // Parse body if it was passed as a raw JSON string
-  let parsedBody: Record<string, any>
+
+  let parsedBody: TingeeWebhookBody
   if (typeof body === 'string') {
     try {
       parsedBody = JSON.parse(body)
@@ -123,8 +137,9 @@ export function verifyWebhookSignature(input: WebhookVerifyInput): WebhookVerify
   }
 
   for (const field of REQUIRED_BODY_FIELDS) {
-    if (!parsedBody[field]) {
-      return { code: `MISSING_BODY_FIELD`, message: `body.${field} is required` }
+    const val = parsedBody[field]
+    if (val === undefined || val === null || val === '') {
+      return { code: 'MISSING_BODY_FIELD', message: `body.${field} is required` }
     }
   }
 
@@ -141,5 +156,5 @@ export function verifyWebhookSignature(input: WebhookVerifyInput): WebhookVerify
     return { code: 'INVALID_SIGNATURE', message: 'Signature format is invalid' }
   }
 
-  return { code: '00', message: 'Success' }
+  return { code: '00', message: 'OK' }
 }
