@@ -207,10 +207,10 @@ export type OpenApiCreateVAInpuDto = {
   name?: string
   cashFlowSource?: 'bank-transfer' | 'card'
   accountType: 'personal-account' | 'business-account' | 'business-household-account'
-  accountNumber: string
-  accountName: string
-  identity: string
-  mobile: string
+  accountNumber?: string
+  accountName?: string
+  identity?: string
+  mobile?: string
   masterMerchantId?: number
   shopId?: number
   vaPrefix?: string
@@ -235,8 +235,8 @@ export type OpenApiCreateVAInpuDto = {
   bankBin?: string
   bankName?: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
   merchantId?: number
-  redirectUrl: string
-  webhookUrl: string
+  redirectUrl?: string
+  webhookUrl?: string
 }
 
 export type OpenApiConfirmVAOuputDto = {
@@ -496,7 +496,7 @@ export type OpenApiCreateOrUpdateShopDto = {
   id?: number
   name: string
   email?: string
-  phoneNumber: string
+  phoneNumber?: string
   provinceId?: string
   districtId?: string
   communeId?: string
@@ -1237,9 +1237,9 @@ export type OpenApiCreateBankVAOutputDto = {
 
 export type OpenApiConfigAccountBusinessDto = {
   bankName?: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
-  accountNumber: string
-  accountName: string
-  mobile: string
+  accountNumber?: string
+  accountName?: string
+  mobile?: string
   vaPrefix?: string
   merchantId?: number
   acbUserId: string
