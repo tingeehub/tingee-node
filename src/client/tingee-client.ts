@@ -3,7 +3,7 @@ import { TingeeHttpClient } from './http.js'
 import { allMethods, type TingeeAllMethods } from './generated-methods.js'
 import { createCustomMethods, type CustomMethods } from './custom-methods.js'
 import { verifyWebhookSignature } from '../signature/signer.js'
-import type { WebhookVerifyResult, TingeeWebhookBody } from '../signature/signer.js'
+import type { WebhookVerifyResult } from '../signature/signer.js'
 
 export interface TingeeClient extends TingeeAllMethods, CustomMethods { }
 
@@ -40,14 +40,11 @@ export class TingeeClient {
     return this.baseUrl
   }
 
-  verifyWebhookSignature(input: {
-    signature: string
-    timestamp: string
-    body: TingeeWebhookBody | string
-  }): WebhookVerifyResult {
-    return verifyWebhookSignature({
-      secretToken: this.secretKey,
-      ...input,
-    })
+  verifyWebhookSignature(
+    signature: string,
+    timestamp: string,
+    body: object | string
+  ): WebhookVerifyResult {
+    return verifyWebhookSignature(this.secretKey, signature, timestamp, body)
   }
 }

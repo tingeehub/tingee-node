@@ -12,7 +12,22 @@ export enum BankNameEnum {
     AGRIBANK = 'AGRIBANK',
     SHINHAN = 'SHINHAN',
     COB = 'COB',
-    MSB = 'MSB',
+}
+
+export enum BankBinEnum {
+    OCB = '970448',
+    BIDV = '970418',
+    MBB = '970422',
+    ACB = '970416',
+    VPB = '970432',
+    PGB = '970430',
+    VIB = '970441',
+    STB = '970403',
+    CTG = '970415',
+    VCB = '970436',
+    AGRIBANK = '970405',
+    SHINHAN = '970424',
+    COB = '970446',
 }
 
 type BankInfo = {

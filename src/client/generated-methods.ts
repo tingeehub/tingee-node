@@ -3,6 +3,7 @@
 
 import type { TingeeHttpClient } from './http.js'
 import type { TingeeApiResponse } from '../types/api-response.js'
+import type { BankBinEnum } from '../types/bank-constants.js'
 import type { BIDVOpenApiReadAmountDto } from '../types/generated.js'
 import type { Bank } from '../types/generated.js'
 import type { BankCreateVAOuputDto } from '../types/generated.js'
@@ -361,7 +362,7 @@ export const allMethods = (http: TingeeHttpClient) => ({
   id: number
   name: string
   merchantId: number
-  bankBin: string
+  bankBin: BankBinEnum | string
   bankName: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
   accountNumber: string
   vaAccountNumber?: string
@@ -495,7 +496,7 @@ export const allMethods = (http: TingeeHttpClient) => ({
   id: number
   name: string
   merchantId: number
-  bankBin: string
+  bankBin: BankBinEnum | string
   bankName: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
   accountNumber: string
   vaAccountNumber?: string

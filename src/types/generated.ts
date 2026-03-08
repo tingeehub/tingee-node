@@ -1,6 +1,8 @@
 // Auto-generated from openapi/sdk.json
 // DO NOT EDIT MANUALLY
 
+import { BankBinEnum } from './bank-constants.js'
+
 export type OpenApiOuputDto = {
   code: string
   message: string
@@ -17,7 +19,7 @@ export type GenerateVietQROuputDto = {
 export type BankNameEnum = 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
 
 export type OpenApiGenerateVietQRInputDto = {
-  bankBin?: string
+  bankBin?: BankBinEnum | string
   bankName?: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
   accountNumber: string
   amount?: number
@@ -36,11 +38,11 @@ export type GenerateDynamicQRInputDto = {
   merchantId?: number
   vaAccountNumber: string
   qrCodeType: 'dynamic-one-time-payment' | 'dynamic-recurring-payment'
-  bankBin?: string
+  bankBin?: BankBinEnum | string
   bankName?: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
-  amount: number
+  amount?: number
   purpose?: string
-  expireInMinute: number
+  expireInMinute?: number
   extraInfo?: string
 }
 
@@ -57,7 +59,7 @@ export type OpenApiDeleteDynamicQRInputDto = {
 export type OpenApiBillInfoDto = {
   billId: string
   qrCodeType: string
-  bankBin: string
+  bankBin: BankBinEnum | string
   accountNumber: string
   vaAccountNumber: string
   qrAccount: string
@@ -76,7 +78,7 @@ export type OpenApiTransactionPagedOuputDto = {
   transactionId: string
   merchantId: number
   shopId: number
-  bankBin?: string
+  bankBin?: BankBinEnum | string
   cashFlowSource?: 'bank-transfer' | 'card'
   code: string
   amount: number
@@ -93,7 +95,7 @@ export type OpenApiGetStatusDynamicQROutputDto = {
   billInfo: {
   billId: string
   qrCodeType: string
-  bankBin: string
+  bankBin: BankBinEnum | string
   accountNumber: string
   vaAccountNumber: string
   qrAccount: string
@@ -109,7 +111,7 @@ export type OpenApiGetStatusDynamicQROutputDto = {
   transactionId: string
   merchantId: number
   shopId: number
-  bankBin?: string
+  bankBin?: BankBinEnum | string
   cashFlowSource?: 'bank-transfer' | 'card'
   code: string
   amount: number
@@ -149,7 +151,7 @@ export type StatusMerchantAccountNumberEnum = 'inactive' | 'active' | 'lock'
 
 export type OpenApiGetVAPagedOuputDto = {
   bankName: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
-  bankBin?: string
+  bankBin?: BankBinEnum | string
   accountType: 'personal-account' | 'business-account' | 'business-household-account'
   accountName?: string
   accountNumber: string
@@ -173,12 +175,12 @@ export type OpenApiGetVAPagedInputDto = {
   accountType: 'personal-account' | 'business-account' | 'business-household-account'
   agentId?: number
   dataAccess: 'referral-only' | 'distributor-only'
-  bankBin?: string
+  bankBin?: BankBinEnum | string
   bankName?: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
 }
 
 export type OpenApiGenerateVietQROuputDto = {
-  bankBin: string
+  bankBin: BankBinEnum | string
   accountNumber: string
   amount?: string
   purpose?: string
@@ -232,7 +234,7 @@ export type OpenApiCreateVAInpuDto = {
   linkType?: 'api-exact' | 'manual-exact' | 'manual-include'
   vaAccountNumber?: string
   acbUserId?: string
-  bankBin?: string
+  bankBin?: BankBinEnum | string
   bankName?: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
   merchantId?: number
   redirectUrl?: string
@@ -251,7 +253,7 @@ export type OpenApiBankConfirmVAInputDto = {
   confirmId: string
   otpNumber: string
   bankName: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
-  bankBin: string
+  bankBin: BankBinEnum | string
 }
 
 export type BankDeleteVAOutputDto = {
@@ -261,14 +263,14 @@ export type BankDeleteVAOutputDto = {
 export type OpenApiRegisterNotifyDto = {
   merchantId?: number
   vaAccountNumber: string
-  bankBin?: string
+  bankBin?: BankBinEnum | string
   bankName?: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
 }
 
 export type OpenApiRefundDto = {
   merchantId?: number
   transactionCode: string
-  bankBin?: string
+  bankBin?: BankBinEnum | string
   bankName?: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
 }
 
@@ -326,7 +328,7 @@ export type BIDVOpenApiReadAmountDto = {
   uuid: string
   transactionId: string
   amount: number
-  bankBin: string
+  bankBin: BankBinEnum | string
   firstDisplayText?: string
   secondDisplayText?: string
   thirdDisplayText?: string
@@ -338,7 +340,7 @@ export type OpenApiReadAmountDto = {
   uuid: string
   transactionId: string
   amount: number
-  bankBin: string
+  bankBin: BankBinEnum | string
   firstDisplayText?: string
   secondDisplayText?: string
   thirdDisplayText?: string
@@ -351,7 +353,7 @@ export type OpenApiShowQRCodeDto = {
   vaAccountNumber?: string
   amount: number
   qrCode: string
-  bankBin?: string
+  bankBin?: BankBinEnum | string
   bankName?: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
   deviceType?: 'app-tingee' | 'tingee-box-f1' | 'tingee-box-2a' | 'tingee-box-2as' | 'tingee-box-s1' | 'tingee-box-3ls' | 'tingee-box-3pro' | 'tingee-box-3vn' | 'tingee-box-3vna' | 'tingee-box-4ls' | 'tingee-box-5s' | 'tingee-box-5sa' | 'tingee-box-6ls' | 'tingee-box-6pro' | 'tingee-box-6xs' | 'vn-50' | 'loa-pay' | 'trusted-pay' | 'tingee-box-3vn-mbb' | 'tingee-box-3pro-mbb' | 'tingee-box-3pro-x' | 'tingee-box-max' | 'tingee-box-8pro'
   firstText?: string
@@ -434,11 +436,11 @@ export type OpenApiGenerateAndShowDynamicQrCodeDto = {
   merchantId?: number
   vaAccountNumber: string
   qrCodeType: 'dynamic-one-time-payment' | 'dynamic-recurring-payment'
-  bankBin?: string
+  bankBin?: BankBinEnum | string
   bankName?: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
-  amount: number
+  amount?: number
   purpose?: string
-  expireInMinute: number
+  expireInMinute?: number
   extraInfo?: string
   uuid: string
   deviceType?: 'app-tingee' | 'tingee-box-f1' | 'tingee-box-2a' | 'tingee-box-2as' | 'tingee-box-s1' | 'tingee-box-3ls' | 'tingee-box-3pro' | 'tingee-box-3vn' | 'tingee-box-3vna' | 'tingee-box-4ls' | 'tingee-box-5s' | 'tingee-box-5sa' | 'tingee-box-6ls' | 'tingee-box-6pro' | 'tingee-box-6xs' | 'vn-50' | 'loa-pay' | 'trusted-pay' | 'tingee-box-3vn-mbb' | 'tingee-box-3pro-mbb' | 'tingee-box-3pro-x' | 'tingee-box-max' | 'tingee-box-8pro'
@@ -711,7 +713,7 @@ export type OpenApiDeepLinkDto = {
   qrCode: string
   redirectUrl: string
   callbackUrl: string
-  bankBin: string
+  bankBin: BankBinEnum | string
   destinationBankBin: string
   accountName: string
   accountNumber: string
@@ -987,7 +989,7 @@ export type V2AccountNumberDDLDto = {
   id: number
   name: string
   merchantId: number
-  bankBin: string
+  bankBin: BankBinEnum | string
   bankName: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
   accountNumber: string
   vaAccountNumber?: string
@@ -1140,7 +1142,7 @@ export type OpenApiTransactionPagedInputDto = {
   merchantId?: number
   shopIds?: number[]
   vaAccountNumbers?: string[]
-  bankBin?: string
+  bankBin?: BankBinEnum | string
   billId?: string
   startTime?: string
   endTime?: string
@@ -1156,7 +1158,7 @@ export type MerchantBankConfigPagedOutputDto = {
   merchantId: number
   accountType: 'personal-account' | 'business-account' | 'business-household-account'
   configDto?: Record<string, any>
-  bankBin?: string
+  bankBin?: BankBinEnum | string
   bankName?: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
 }
 
@@ -1167,7 +1169,7 @@ export type OpenApiMerchantBankConfigPagedInputDto = {
   maxResultCount: number
   accountType?: 'personal-account' | 'business-account' | 'business-household-account'
   merchantId?: number
-  bankBin?: string
+  bankBin?: BankBinEnum | string
   bankName?: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
 }
 
@@ -1219,7 +1221,7 @@ export type OpenApiBankCreateOrUpdateConfigDto = {
   id?: number
   otpNumber?: string
   confirmId?: string
-  bankBin?: string
+  bankBin?: BankBinEnum | string
   bankName?: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
   merchantId?: number
 }
@@ -1243,7 +1245,7 @@ export type OpenApiConfigAccountBusinessDto = {
   vaPrefix?: string
   merchantId?: number
   acbUserId: string
-  bankBin?: string
+  bankBin?: BankBinEnum | string
 }
 
 export type OpenApiDeleteConfigBusinessDto = {
@@ -1256,7 +1258,7 @@ export type OpenApiDeleteConfigBusinessDto = {
   acbUserId: string
 }
   merchantId?: number
-  bankBin?: string
+  bankBin?: BankBinEnum | string
   bankName?: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
 }
 
@@ -1765,7 +1767,7 @@ export type OpenApiGetPagingMerchantsDto = {
 
 export type OpenApiRegisterDto = {
   requestId: string
-  bankBin?: string
+  bankBin?: BankBinEnum | string
   accountName?: string
   phone: string
   returnUrl: string
@@ -1851,7 +1853,7 @@ export type OpenApiSubscriptionStatusResponseDto = {
   tokenRef: string
   status: 'active' | 'inactive'
   subscriptionId: string
-  bankBin: string
+  bankBin: BankBinEnum | string
 }
 
 export type CustomerInfoDto = {
@@ -1867,7 +1869,7 @@ export type OpenApiPaymentTransactionStatusResponseDto = {
   transactionId?: string
   subscriptionId?: string
   tokenRef: string
-  bankBin: string
+  bankBin: BankBinEnum | string
   customer: {
   onepayAccountId: string
   name: string
@@ -1888,7 +1890,7 @@ export type OpenApiPaymentTransactionsPagedOutputDto = {
   transactionId: string
   code: string
   bankName: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
-  bankBin: string
+  bankBin: BankBinEnum | string
   amount: string
   content: string
   accountNumber: string

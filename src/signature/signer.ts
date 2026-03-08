@@ -75,7 +75,7 @@ export interface WebhookVerifyInput {
    * The JSON body of the incoming webhook request.
    * Can be passed as an already-parsed object OR as a raw JSON string.
    */
-  body: TingeeWebhookBody | string
+  body: object | string
 }
 
 /**
@@ -108,8 +108,12 @@ const REQUIRED_BODY_FIELDS = [
   'transactionDate',
 ] as const
 
-export function verifyWebhookSignature(input: WebhookVerifyInput): WebhookVerifyResult {
-  const { secretToken, signature, timestamp, body } = input
+export function verifyWebhookSignature(
+  secretToken: string,
+  signature: string,
+  timestamp: string,
+  body: object | string
+): WebhookVerifyResult {
 
   if (!signature) {
     return { code: 'MISSING_SIGNATURE', message: 'x-signature header is required' }
@@ -121,7 +125,7 @@ export function verifyWebhookSignature(input: WebhookVerifyInput): WebhookVerify
     return { code: 'INVALID_TIMESTAMP', message: 'x-request-timestamp must be in yyyyMMddHHmmssSSS format (17 digits)' }
   }
 
-  let parsedBody: TingeeWebhookBody
+  let parsedBody: Record<string, unknown>
   if (typeof body === 'string') {
     try {
       parsedBody = JSON.parse(body)
@@ -129,7 +133,7 @@ export function verifyWebhookSignature(input: WebhookVerifyInput): WebhookVerify
       return { code: 'INVALID_BODY', message: 'body string is not valid JSON' }
     }
   } else {
-    parsedBody = body
+    parsedBody = body as Record<string, unknown>
   }
 
   if (!parsedBody || typeof parsedBody !== 'object') {
@@ -137,7 +141,7 @@ export function verifyWebhookSignature(input: WebhookVerifyInput): WebhookVerify
   }
 
   for (const field of REQUIRED_BODY_FIELDS) {
-    const val = parsedBody[field]
+    const val = (parsedBody as Record<string, unknown>)[field]
     if (val === undefined || val === null || val === '') {
       return { code: 'MISSING_BODY_FIELD', message: `body.${field} is required` }
     }
