@@ -5,7 +5,6 @@ import type { TingeeHttpClient } from './http.js'
 import type { TingeeApiResponse } from '../types/api-response.js'
 import type { BankBinEnum } from '../types/bank-constants.js'
 import type { BIDVOpenApiReadAmountDto } from '../types/generated.js'
-import type { Bank } from '../types/generated.js'
 import type { BankCreateVAOuputDto } from '../types/generated.js'
 import type { BankDeleteVAOutputDto } from '../types/generated.js'
 import type { DeleteSubscriptionOutputDto } from '../types/generated.js'
@@ -102,8 +101,22 @@ export const allMethods = (http: TingeeHttpClient) => ({
       }).then(r => r.data)
     }
 
-    getBanks(): Promise<TingeeApiResponse<Bank>> {
-      return http.request<TingeeApiResponse<Bank>>({
+    getBanks(): Promise<TingeeApiResponse<{
+  code: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
+  name: string
+  shortName: string
+  bin: string
+  urlLogo: string
+  termsAndConditions: Record<string, any>
+}[]>> {
+      return http.request<TingeeApiResponse<{
+  code: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
+  name: string
+  shortName: string
+  bin: string
+  urlLogo: string
+  termsAndConditions: Record<string, any>
+}[]>>({
         method: 'get',
         path: '/v1/bank/get-banks'
       }).then(r => r.data)
