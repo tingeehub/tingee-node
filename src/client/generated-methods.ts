@@ -52,7 +52,6 @@ import type { OpenApiPaymentTransactionsPagedOutputDto } from '../types/generate
 import type { OpenApiReadAmountDto } from '../types/generated.js'
 import type { OpenApiReadPartnerSecurityCodeDto } from '../types/generated.js'
 import type { OpenApiReadSecurityCodeDto } from '../types/generated.js'
-import type { OpenApiRefundDto } from '../types/generated.js'
 import type { OpenApiRefundInputDto } from '../types/generated.js'
 import type { OpenApiRegisterDto } from '../types/generated.js'
 import type { OpenApiRegisterNotifyDto } from '../types/generated.js'
@@ -197,14 +196,6 @@ export const allMethods = (http: TingeeHttpClient) => ({
       return http.request<TingeeApiResponse<BankDeleteVAOutputDto>>({
         method: 'post',
         path: '/v1/bank/confirm-register-notify',
-        body
-      }).then(r => r.data)
-    }
-
-    refund(body: OpenApiRefundDto): Promise<TingeeApiResponse<EmptyDto>> {
-      return http.request<TingeeApiResponse<EmptyDto>>({
-        method: 'post',
-        path: '/v1/bank/refund',
         body
       }).then(r => r.data)
     }
