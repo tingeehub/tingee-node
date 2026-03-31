@@ -246,6 +246,7 @@ export type OpenApiConfirmVAOuputDto = {
   bankName: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
   accountNumber: string
   vaAccountNumber: string
+  shopId: number
 }
 
 export type OpenApiBankConfirmVAInputDto = {
