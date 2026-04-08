@@ -13,7 +13,6 @@ import type { DeleteSubscriptionOutputDto } from '../types/generated.js'
 import type { DeviceDto } from '../types/generated.js'
 import type { DownloadInvoiceOutputDto } from '../types/generated.js'
 import type { DownloadInvoiceQueryDto } from '../types/generated.js'
-import type { EInvoiceAccountOutputDto } from '../types/generated.js'
 import type { EmptyDto } from '../types/generated.js'
 import type { GenerateDynamicQRInputDto } from '../types/generated.js'
 import type { GenerateDynamicQROuputDto } from '../types/generated.js'
@@ -24,7 +23,6 @@ import type { InvoiceTemplateOutputDto } from '../types/generated.js'
 import type { InvoiceTemplateQueryDto } from '../types/generated.js'
 import type { MerchantBankConfigPagedOutputDto } from '../types/generated.js'
 import type { MerchantDto } from '../types/generated.js'
-import type { Number } from '../types/generated.js'
 import type { OpenApiAddDeviceToShop } from '../types/generated.js'
 import type { OpenApiBankConfirmVAInputDto } from '../types/generated.js'
 import type { OpenApiBankCreateOrUpdateConfigDto } from '../types/generated.js'
@@ -109,7 +107,7 @@ export const allMethods = (http: TingeeHttpClient) => ({
     }
 
     getBanks(): Promise<TingeeApiResponse<{
-  code: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
+  code: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB' | 'NEXTPAY'
   name: string
   shortName: string
   bin: string
@@ -117,7 +115,7 @@ export const allMethods = (http: TingeeHttpClient) => ({
   termsAndConditions: Record<string, any>
 }[]>> {
       return http.request<TingeeApiResponse<{
-  code: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
+  code: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB' | 'NEXTPAY'
   name: string
   shortName: string
   bin: string
@@ -173,7 +171,7 @@ export const allMethods = (http: TingeeHttpClient) => ({
 
     deleteVa(query: {
     bankBin?: string
-    bankName?: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB'
+    bankName?: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB' | 'NEXTPAY'
     vaAccountNumber: string
     merchantId?: number
   }): Promise<TingeeApiResponse<BankDeleteVAOutputDto>> {
@@ -441,16 +439,16 @@ export const allMethods = (http: TingeeHttpClient) => ({
       }).then(r => r.data)
     }
 
-    createOrUpdateConfig(body: OpenApiBankCreateOrUpdateConfigDto): Promise<TingeeApiResponse<Number>> {
-      return http.request<TingeeApiResponse<Number>>({
+    createOrUpdateConfig(body: OpenApiBankCreateOrUpdateConfigDto): Promise<TingeeApiResponse<number>> {
+      return http.request<TingeeApiResponse<number>>({
         method: 'post',
         path: '/v1/merchant/create-or-update-config',
         body
       }).then(r => r.data)
     }
 
-    deleteConfig(body: OpenApiDeleteConfigDto): Promise<TingeeApiResponse<Number>> {
-      return http.request<TingeeApiResponse<Number>>({
+    deleteConfig(body: OpenApiDeleteConfigDto): Promise<TingeeApiResponse<number>> {
+      return http.request<TingeeApiResponse<number>>({
         method: 'post',
         path: '/v1/merchant/delete-config',
         body
@@ -473,8 +471,8 @@ export const allMethods = (http: TingeeHttpClient) => ({
       }).then(r => r.data)
     }
 
-    create(body: OpenApiCreateMerchantDto): Promise<TingeeApiResponse<Number>> {
-      return http.request<TingeeApiResponse<Number>>({
+    create(body: OpenApiCreateMerchantDto): Promise<TingeeApiResponse<number>> {
+      return http.request<TingeeApiResponse<number>>({
         method: 'post',
         path: '/v1/merchant/create',
         body
@@ -509,8 +507,8 @@ export const allMethods = (http: TingeeHttpClient) => ({
       }).then(r => r.data)
     }
 
-    createOrUpdateAccount(body: CreateOrUpdateEInvoiceAccountDto): Promise<TingeeApiResponse<EInvoiceAccountOutputDto>> {
-      return http.request<TingeeApiResponse<EInvoiceAccountOutputDto>>({
+    createOrUpdateAccount(body: CreateOrUpdateEInvoiceAccountDto): Promise<TingeeApiResponse<number>> {
+      return http.request<TingeeApiResponse<number>>({
         method: 'post',
         path: '/v1/e-invoice/create-or-update-account',
         body
