@@ -1682,12 +1682,8 @@ export type OpenApiDeleteConfigBusinessDto = {
   bankName?: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB' | 'NEXTPAY'
 }
 
-export type EventUrlItemType = 'shop' | 'accountNumber' | 'all'
-
-export type EventUrlItemDto = {
-  url: string
-  type: 'shop' | 'accountNumber' | 'all'
-  ids?: string[]
+export type OpenApiMerchantIdDto = {
+  merchantId: number
 }
 
 export type MerchantBaasTypeEnum = 'trial' | 'trial-extended' | 'customer' | 'cancelled'
@@ -1705,24 +1701,18 @@ export type OpenApiCreateMerchantDto = {
   communeId?: string
   address?: string
   fullAddress?: string
-  eventUrl?: string
-  eventUrls?: {
-  url: string
-  type: 'shop' | 'accountNumber' | 'all'
-  ids?: string[]
-}[]
-  isLockEvent?: boolean
-  isOrganizationUnit?: boolean
   referralCode?: string
-  userReferralAncestorIds?: string
-  userReferralLevel?: number
-  deviceDistributorAncestorMap?: string
-  isMasterMerchant?: boolean
   baasType?: 'trial' | 'trial-extended' | 'customer' | 'cancelled'
   password: string
   appType: 'ocb-web' | 'ocb-app' | 'bidv-web' | 'bidv-app' | 'stb-web' | 'stb-app' | 'vcb-web' | 'vcb-app' | 'tingee-web' | 'tingee-app' | 'tingee-merchant-app' | 'loa-hub' | 'mini-app-mbb' | 'baas'
-  isMultipleRole?: boolean
-  userReferrerId?: number
+}
+
+export type EventUrlItemType = 'shop' | 'accountNumber' | 'all'
+
+export type EventUrlItemDto = {
+  url: string
+  type: 'shop' | 'accountNumber' | 'all'
+  ids?: string[]
 }
 
 export type OCBConfigDto = {

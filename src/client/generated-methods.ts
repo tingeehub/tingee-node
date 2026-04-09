@@ -52,6 +52,7 @@ import type { OpenApiGetStatusDynamicQROutputDto } from '../types/generated.js'
 import type { OpenApiGetVAPagedInputDto } from '../types/generated.js'
 import type { OpenApiGetVAPagedOuputDto } from '../types/generated.js'
 import type { OpenApiMerchantBankConfigPagedInputDto } from '../types/generated.js'
+import type { OpenApiMerchantIdDto } from '../types/generated.js'
 import type { OpenApiPaymentBillDto } from '../types/generated.js'
 import type { OpenApiPaymentTransactionStatusResponseDto } from '../types/generated.js'
 import type { OpenApiPaymentTransactionsPagedOutputDto } from '../types/generated.js'
@@ -471,8 +472,8 @@ export const allMethods = (http: TingeeHttpClient) => ({
       }).then(r => r.data)
     }
 
-    create(body: OpenApiCreateMerchantDto): Promise<TingeeApiResponse<number>> {
-      return http.request<TingeeApiResponse<number>>({
+    create(body: OpenApiCreateMerchantDto): Promise<TingeeApiResponse<OpenApiMerchantIdDto>> {
+      return http.request<TingeeApiResponse<OpenApiMerchantIdDto>>({
         method: 'post',
         path: '/v1/merchant/create',
         body
