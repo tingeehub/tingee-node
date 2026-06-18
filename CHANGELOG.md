@@ -1,5 +1,11 @@
 # Changelog — @tingee/sdk-node
 
+## [0.2.4] — 2026-06-18
+
+### Changed
+- Updated OpenAPI spec with latest API definitions
+- Regenerated SDK client and DTO classes
+
 ## [0.2.3] — 2026-04-09
 
 ### Changed

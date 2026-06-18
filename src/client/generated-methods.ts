@@ -17,10 +17,11 @@ import type { EmptyDto } from '../types/generated.js'
 import type { GenerateDynamicQRInputDto } from '../types/generated.js'
 import type { GenerateDynamicQROuputDto } from '../types/generated.js'
 import type { GenerateVietQROuputDto } from '../types/generated.js'
+import type { GetInvoiceInfoQueryDto } from '../types/generated.js'
 import type { GetPagingEInvoiceAccountInputDto } from '../types/generated.js'
 import type { GetPagingEInvoiceAccountOutputDto } from '../types/generated.js'
+import type { InvoiceTemplateInputDto } from '../types/generated.js'
 import type { InvoiceTemplateOutputDto } from '../types/generated.js'
-import type { InvoiceTemplateQueryDto } from '../types/generated.js'
 import type { MerchantBankConfigPagedOutputDto } from '../types/generated.js'
 import type { MerchantDto } from '../types/generated.js'
 import type { OpenApiAddDeviceToShop } from '../types/generated.js'
@@ -33,6 +34,7 @@ import type { OpenApiCreateMerchantDto } from '../types/generated.js'
 import type { OpenApiCreateOrUpdateShopDto } from '../types/generated.js'
 import type { OpenApiCreateOrUpdateShopOutputDto } from '../types/generated.js'
 import type { OpenApiCreateVAInpuDto } from '../types/generated.js'
+import type { OpenApiDeepLinkBIDVTESTDto } from '../types/generated.js'
 import type { OpenApiDeepLinkDto } from '../types/generated.js'
 import type { OpenApiDeleteConfigBusinessDto } from '../types/generated.js'
 import type { OpenApiDeleteConfigDto } from '../types/generated.js'
@@ -53,14 +55,17 @@ import type { OpenApiGetVAPagedInputDto } from '../types/generated.js'
 import type { OpenApiGetVAPagedOuputDto } from '../types/generated.js'
 import type { OpenApiMerchantBankConfigPagedInputDto } from '../types/generated.js'
 import type { OpenApiMerchantIdDto } from '../types/generated.js'
+import type { OpenApiNfcCommandDto } from '../types/generated.js'
 import type { OpenApiPaymentBillDto } from '../types/generated.js'
 import type { OpenApiPaymentTransactionStatusResponseDto } from '../types/generated.js'
 import type { OpenApiPaymentTransactionsPagedOutputDto } from '../types/generated.js'
+import type { OpenApiPrintReceiptDto } from '../types/generated.js'
 import type { OpenApiReadAmountDto } from '../types/generated.js'
 import type { OpenApiReadSecurityCodeDto } from '../types/generated.js'
 import type { OpenApiRefundInputDto } from '../types/generated.js'
 import type { OpenApiRegisterDto } from '../types/generated.js'
 import type { OpenApiRegisterNotifyDto } from '../types/generated.js'
+import type { OpenApiResetDeviceDto } from '../types/generated.js'
 import type { OpenApiShowQRCodeDto } from '../types/generated.js'
 import type { OpenApiSubscriptionStatusResponseDto } from '../types/generated.js'
 import type { OpenApiTransactionPagedInputDto } from '../types/generated.js'
@@ -108,7 +113,7 @@ export const allMethods = (http: TingeeHttpClient) => ({
     }
 
     getBanks(): Promise<TingeeApiResponse<{
-  code: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB' | 'NEXTPAY'
+  code: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB' | 'NEXTPAY' | 'TPB'
   name: string
   shortName: string
   bin: string
@@ -116,7 +121,7 @@ export const allMethods = (http: TingeeHttpClient) => ({
   termsAndConditions: Record<string, any>
 }[]>> {
       return http.request<TingeeApiResponse<{
-  code: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB' | 'NEXTPAY'
+  code: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB' | 'NEXTPAY' | 'TPB'
   name: string
   shortName: string
   bin: string
@@ -172,7 +177,7 @@ export const allMethods = (http: TingeeHttpClient) => ({
 
     deleteVa(query: {
     bankBin?: string
-    bankName?: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB' | 'NEXTPAY'
+    bankName?: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB' | 'NEXTPAY' | 'TPB'
     vaAccountNumber: string
     merchantId?: number
   }): Promise<TingeeApiResponse<BankDeleteVAOutputDto>> {
@@ -310,6 +315,30 @@ export const allMethods = (http: TingeeHttpClient) => ({
         body
       }).then(r => r.data)
     }
+
+    printReceipt(body: OpenApiPrintReceiptDto): Promise<TingeeApiResponse<EmptyDto>> {
+      return http.request<TingeeApiResponse<EmptyDto>>({
+        method: 'post',
+        path: '/v1/device/print-receipt',
+        body
+      }).then(r => r.data)
+    }
+
+    nfcCommand(body: OpenApiNfcCommandDto): Promise<TingeeApiResponse<EmptyDto>> {
+      return http.request<TingeeApiResponse<EmptyDto>>({
+        method: 'post',
+        path: '/v1/device/nfc-command',
+        body
+      }).then(r => r.data)
+    }
+
+    resetDevice(body: OpenApiResetDeviceDto): Promise<TingeeApiResponse<EmptyDto>> {
+      return http.request<TingeeApiResponse<EmptyDto>>({
+        method: 'post',
+        path: '/v1/device/reset-device',
+        body
+      }).then(r => r.data)
+    }
   }(),
 
   shop: new class {
@@ -335,6 +364,14 @@ export const allMethods = (http: TingeeHttpClient) => ({
       return http.request<TingeeApiResponse<String>>({
         method: 'post',
         path: '/v1/deep-link/generate',
+        body
+      }).then(r => r.data)
+    }
+
+    generateBidvTest(body: OpenApiDeepLinkBIDVTESTDto): Promise<TingeeApiResponse<String>> {
+      return http.request<TingeeApiResponse<String>>({
+        method: 'post',
+        path: '/v1/deep-link/generate-bidv-test',
         body
       }).then(r => r.data)
     }
@@ -525,11 +562,11 @@ export const allMethods = (http: TingeeHttpClient) => ({
     }
 
     getProvider(): Promise<TingeeApiResponse<{
-  code: 'x-cyber' | 'hilo' | 's-invoice'
+  code: 'x-cyber' | 'hilo' | 's-invoice' | 'misa'
   name: string
 }[]>> {
       return http.request<TingeeApiResponse<{
-  code: 'x-cyber' | 'hilo' | 's-invoice'
+  code: 'x-cyber' | 'hilo' | 's-invoice' | 'misa'
   name: string
 }[]>>({
         method: 'post',
@@ -553,6 +590,14 @@ export const allMethods = (http: TingeeHttpClient) => ({
       }).then(r => r.data)
     }
 
+    getInvoiceInfo(body: GetInvoiceInfoQueryDto): Promise<TingeeApiResponse<TrackingResultDto>> {
+      return http.request<TingeeApiResponse<TrackingResultDto>>({
+        method: 'post',
+        path: '/v1/e-invoice/get-invoice-info',
+        body
+      }).then(r => r.data)
+    }
+
     download(body: DownloadInvoiceQueryDto): Promise<TingeeApiResponse<DownloadInvoiceOutputDto>> {
       return http.request<TingeeApiResponse<DownloadInvoiceOutputDto>>({
         method: 'post',
@@ -561,7 +606,7 @@ export const allMethods = (http: TingeeHttpClient) => ({
       }).then(r => r.data)
     }
 
-    invoiceTemplates(body: InvoiceTemplateQueryDto): Promise<TingeeApiResponse<InvoiceTemplateOutputDto>> {
+    invoiceTemplates(body: InvoiceTemplateInputDto): Promise<TingeeApiResponse<InvoiceTemplateOutputDto>> {
       return http.request<TingeeApiResponse<InvoiceTemplateOutputDto>>({
         method: 'post',
         path: '/v1/e-invoice/invoice-templates',
