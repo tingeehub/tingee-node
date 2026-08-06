@@ -6,6 +6,9 @@ import type { TingeeApiResponse } from '../types/api-response.js'
 import type { BankBinEnum } from '../types/bank-constants.js'
 import type { BankCreateVAOuputDto } from '../types/generated.js'
 import type { BankDeleteVAOutputDto } from '../types/generated.js'
+import type { Boolean } from '../types/generated.js'
+import type { ConnectTCTRequestDto } from '../types/generated.js'
+import type { CreateBankLinkSessionInputDto } from '../types/generated.js'
 import type { CreateInvoiceDto } from '../types/generated.js'
 import type { CreateOrUpdateEInvoiceAccountDto } from '../types/generated.js'
 import type { DeleteEInvoiceAccountDto } from '../types/generated.js'
@@ -17,9 +20,13 @@ import type { EmptyDto } from '../types/generated.js'
 import type { GenerateDynamicQRInputDto } from '../types/generated.js'
 import type { GenerateDynamicQROuputDto } from '../types/generated.js'
 import type { GenerateVietQROuputDto } from '../types/generated.js'
+import type { GetIncomeInvoiceDetailRequestDto } from '../types/generated.js'
+import type { GetIncomeInvoicePreviewBase64RequestDto } from '../types/generated.js'
+import type { GetIncomeInvoicesListRequestDto } from '../types/generated.js'
 import type { GetInvoiceInfoQueryDto } from '../types/generated.js'
 import type { GetPagingEInvoiceAccountInputDto } from '../types/generated.js'
 import type { GetPagingEInvoiceAccountOutputDto } from '../types/generated.js'
+import type { InputInvoiceBaseDto } from '../types/generated.js'
 import type { InvoiceTemplateInputDto } from '../types/generated.js'
 import type { InvoiceTemplateOutputDto } from '../types/generated.js'
 import type { MerchantBankConfigPagedOutputDto } from '../types/generated.js'
@@ -30,9 +37,12 @@ import type { OpenApiBankCreateOrUpdateConfigDto } from '../types/generated.js'
 import type { OpenApiConfigAccountBusinessDto } from '../types/generated.js'
 import type { OpenApiConfirmVAOuputDto } from '../types/generated.js'
 import type { OpenApiCreateBankVAOutputDto } from '../types/generated.js'
+import type { OpenApiCreateBatchVaOnOffInputDto } from '../types/generated.js'
+import type { OpenApiCreateDebitAccountInputDto } from '../types/generated.js'
 import type { OpenApiCreateMerchantDto } from '../types/generated.js'
 import type { OpenApiCreateOrUpdateShopDto } from '../types/generated.js'
 import type { OpenApiCreateOrUpdateShopOutputDto } from '../types/generated.js'
+import type { OpenApiCreatePaymentLinkInputDto } from '../types/generated.js'
 import type { OpenApiCreateVAInpuDto } from '../types/generated.js'
 import type { OpenApiDeepLinkBIDVTESTDto } from '../types/generated.js'
 import type { OpenApiDeepLinkDto } from '../types/generated.js'
@@ -56,6 +66,8 @@ import type { OpenApiGetVAPagedOuputDto } from '../types/generated.js'
 import type { OpenApiMerchantBankConfigPagedInputDto } from '../types/generated.js'
 import type { OpenApiMerchantIdDto } from '../types/generated.js'
 import type { OpenApiNfcCommandDto } from '../types/generated.js'
+import type { OpenApiOffVADto } from '../types/generated.js'
+import type { OpenApiOnVADto } from '../types/generated.js'
 import type { OpenApiPaymentBillDto } from '../types/generated.js'
 import type { OpenApiPaymentTransactionStatusResponseDto } from '../types/generated.js'
 import type { OpenApiPaymentTransactionsPagedOutputDto } from '../types/generated.js'
@@ -76,7 +88,9 @@ import type { PaymentBillResponseDto } from '../types/generated.js'
 import type { RefundOutputDto } from '../types/generated.js'
 import type { SendInvoiceEmailDto } from '../types/generated.js'
 import type { String } from '../types/generated.js'
+import type { SyncIncomeInvoiceRequestDto } from '../types/generated.js'
 import type { TrackingResultDto } from '../types/generated.js'
+import type { UpdateWebhookNotificationDto } from '../types/generated.js'
 
 export const allMethods = (http: TingeeHttpClient) => ({
   bank: new class {
@@ -113,7 +127,7 @@ export const allMethods = (http: TingeeHttpClient) => ({
     }
 
     getBanks(): Promise<TingeeApiResponse<{
-  code: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB' | 'NEXTPAY' | 'TPB'
+  code: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB' | 'NEXTPAY' | 'PAYOO' | 'BAOKIM' | 'TPB'
   name: string
   shortName: string
   bin: string
@@ -121,7 +135,7 @@ export const allMethods = (http: TingeeHttpClient) => ({
   termsAndConditions: Record<string, any>
 }[]>> {
       return http.request<TingeeApiResponse<{
-  code: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB' | 'NEXTPAY' | 'TPB'
+  code: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB' | 'NEXTPAY' | 'PAYOO' | 'BAOKIM' | 'TPB'
   name: string
   shortName: string
   bin: string
@@ -177,7 +191,7 @@ export const allMethods = (http: TingeeHttpClient) => ({
 
     deleteVa(query: {
     bankBin?: string
-    bankName?: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB' | 'NEXTPAY' | 'TPB'
+    bankName?: 'OCB' | 'BIDV' | 'MBB' | 'ACB' | 'VPB' | 'PGB' | 'VIB' | 'STB' | 'CTG' | 'VCB' | 'AGRIBANK' | 'SHINHAN' | 'COB' | 'MSB' | 'NEXTPAY' | 'PAYOO' | 'BAOKIM' | 'TPB'
     vaAccountNumber: string
     merchantId?: number
   }): Promise<TingeeApiResponse<BankDeleteVAOutputDto>> {
@@ -204,10 +218,70 @@ export const allMethods = (http: TingeeHttpClient) => ({
       }).then(r => r.data)
     }
 
+    onVa(body: OpenApiOnVADto): Promise<TingeeApiResponse<GenerateDynamicQROuputDto>> {
+      return http.request<TingeeApiResponse<GenerateDynamicQROuputDto>>({
+        method: 'post',
+        path: '/v1/bank/on-va',
+        body
+      }).then(r => r.data)
+    }
+
+    offVa(body: OpenApiOffVADto): Promise<TingeeApiResponse<EmptyDto>> {
+      return http.request<TingeeApiResponse<EmptyDto>>({
+        method: 'post',
+        path: '/v1/bank/off-va',
+        body
+      }).then(r => r.data)
+    }
+
+    webhookNotification(body: UpdateWebhookNotificationDto): Promise<TingeeApiResponse<Boolean>> {
+      return http.request<TingeeApiResponse<Boolean>>({
+        method: 'post',
+        path: '/v1/bank/webhook-notification',
+        body
+      }).then(r => r.data)
+    }
+
+    createBankLinkSession(body: CreateBankLinkSessionInputDto): Promise<TingeeApiResponse<String>> {
+      return http.request<TingeeApiResponse<String>>({
+        method: 'post',
+        path: '/v1/bank/create-bank-link-session',
+        body
+      }).then(r => r.data)
+    }
+
     confirmRegisterNotify(body: OpenApiBankConfirmVAInputDto): Promise<TingeeApiResponse<BankDeleteVAOutputDto>> {
       return http.request<TingeeApiResponse<BankDeleteVAOutputDto>>({
         method: 'post',
         path: '/v1/bank/confirm-register-notify',
+        body
+      }).then(r => r.data)
+    }
+
+    createDebit(body: OpenApiCreateDebitAccountInputDto): Promise<TingeeApiResponse<BankCreateVAOuputDto>> {
+      return http.request<TingeeApiResponse<BankCreateVAOuputDto>>({
+        method: 'post',
+        path: '/v1/bank/create-debit',
+        body
+      }).then(r => r.data)
+    }
+
+    createBatchVaOnOff(body: OpenApiCreateBatchVaOnOffInputDto): Promise<{
+  shopId: number
+  qrArray: {
+  vaAccountNumber: string
+  qrData: string
+}[]
+}[]> {
+      return http.request<{
+  shopId: number
+  qrArray: {
+  vaAccountNumber: string
+  qrData: string
+}[]
+}[]>({
+        method: 'post',
+        path: '/v1/bank/create-batch-va-on-off',
         body
       }).then(r => r.data)
     }
@@ -562,12 +636,18 @@ export const allMethods = (http: TingeeHttpClient) => ({
     }
 
     getProvider(): Promise<TingeeApiResponse<{
-  code: 'x-cyber' | 'hilo' | 's-invoice' | 'misa'
+  code: 'x-cyber' | 'hilo' | 's-invoice' | 'misa' | 'bkav'
   name: string
+  description: string
+  urlLogo: string
+  lookupUrlPattern: string
 }[]>> {
       return http.request<TingeeApiResponse<{
-  code: 'x-cyber' | 'hilo' | 's-invoice' | 'misa'
+  code: 'x-cyber' | 'hilo' | 's-invoice' | 'misa' | 'bkav'
   name: string
+  description: string
+  urlLogo: string
+  lookupUrlPattern: string
 }[]>>({
         method: 'post',
         path: '/v1/e-invoice/get-provider'
@@ -618,6 +698,64 @@ export const allMethods = (http: TingeeHttpClient) => ({
       return http.request<TingeeApiResponse<EmptyDto>>({
         method: 'post',
         path: '/v1/e-invoice/send-email',
+        body
+      }).then(r => r.data)
+    }
+
+    inputConnect(body: ConnectTCTRequestDto): Promise<TingeeApiResponse<EmptyDto>> {
+      return http.request<TingeeApiResponse<EmptyDto>>({
+        method: 'post',
+        path: '/v1/e-invoice/input/connect',
+        body
+      }).then(r => r.data)
+    }
+
+    inputDisconnect(body: InputInvoiceBaseDto): Promise<TingeeApiResponse<EmptyDto>> {
+      return http.request<TingeeApiResponse<EmptyDto>>({
+        method: 'post',
+        path: '/v1/e-invoice/input/disconnect',
+        body
+      }).then(r => r.data)
+    }
+
+    inputSync(body: SyncIncomeInvoiceRequestDto): Promise<TingeeApiResponse<EmptyDto>> {
+      return http.request<TingeeApiResponse<EmptyDto>>({
+        method: 'post',
+        path: '/v1/e-invoice/input/sync',
+        body
+      }).then(r => r.data)
+    }
+
+    inputList(body: GetIncomeInvoicesListRequestDto): Promise<TingeeApiResponse<EmptyDto>> {
+      return http.request<TingeeApiResponse<EmptyDto>>({
+        method: 'post',
+        path: '/v1/e-invoice/input/list',
+        body
+      }).then(r => r.data)
+    }
+
+    inputDetail(body: GetIncomeInvoiceDetailRequestDto): Promise<TingeeApiResponse<EmptyDto>> {
+      return http.request<TingeeApiResponse<EmptyDto>>({
+        method: 'post',
+        path: '/v1/e-invoice/input/detail',
+        body
+      }).then(r => r.data)
+    }
+
+    inputPreviewBase64(body: GetIncomeInvoicePreviewBase64RequestDto): Promise<TingeeApiResponse<EmptyDto>> {
+      return http.request<TingeeApiResponse<EmptyDto>>({
+        method: 'post',
+        path: '/v1/e-invoice/input/preview-base64',
+        body
+      }).then(r => r.data)
+    }
+  }(),
+
+  paymentGateway: new class {
+    createLink(body: OpenApiCreatePaymentLinkInputDto): Promise<TingeeApiResponse<String>> {
+      return http.request<TingeeApiResponse<String>>({
+        method: 'post',
+        path: '/v1/payment-gateway/create-link',
         body
       }).then(r => r.data)
     }

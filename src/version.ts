@@ -1,2 +1,2 @@
 /** SDK version — auto-updated by `npm run version:bump` */
-export const SDK_VERSION = '0.2.4'
+export const SDK_VERSION = '0.3.0'
