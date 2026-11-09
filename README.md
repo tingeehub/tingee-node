@@ -121,6 +121,33 @@ handleWebhook(@Req() req: Request, @Body() body: Record<string, any>) {
 
 ---
 
+## Xác thực URL webhook
+
+Khi lưu URL webhook trên Tingee, hệ thống gửi một request xác thực vào URL đó:
+
+```json
+{ "event": "url-validation", "plainToken": "<chuỗi ngẫu nhiên>", "timestamp": 1730000000000 }
+```
+
+Endpoint phải trả về HTTP 200 với `{ "plainToken": "...", "encryptedToken": "..." }`, trong đó `encryptedToken = HMAC-SHA256(secretToken, plainToken)` dạng hex. `secretToken` là secret của **API Key loại Xác thực webhook** đang bật (tạo trong mục API Credentials).
+
+SDK làm sẵn bước này: hàm trả về body cần phản hồi, hoặc `null` nếu không phải request xác thực. Gọi **trước** khi verify chữ ký, vì body xác thực không có các trường giao dịch.
+
+```ts
+import { createUrlValidationResponse } from '@tingee/sdk-node'
+
+app.post('/webhook/tingee', express.json(), (req, res) => {
+  const validation = createUrlValidationResponse(process.env.TINGEE_WEBHOOK_SECRET!, req.body)
+  if (validation) return res.json(validation)
+
+  // Verify chữ ký & xử lý giao dịch như bình thường...
+})
+```
+
+Nếu dùng chung khóa với client: `client.createUrlValidationResponse(req.body)`.
+
+---
+
 ## Bank Constants
 
 ```ts

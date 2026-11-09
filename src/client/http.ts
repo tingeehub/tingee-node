@@ -1,6 +1,8 @@
 import { generateSignature, formatTimestamp } from '../signature/signer.js'
 import { SDK_VERSION } from '../version.js'
 
+const USER_AGENT = `tingee-sdk-node/${SDK_VERSION} (node/${process.version}; ${process.platform})`
+
 /**
  * HTTP method types
  */
@@ -72,6 +74,7 @@ export class TingeeHttpClient {
       'x-request-timestamp': timestamp,
       'x-client-id': this.clientId,
       'x-sdk-version': `tingee-sdk/node/${SDK_VERSION}`,
+      'user-agent': USER_AGENT,
       ...headers,
     }
 

@@ -162,3 +162,56 @@ export function verifyWebhookSignature(
 
   return { code: '00', message: 'OK' }
 }
+
+// ─── Webhook URL validation (challenge) ─────────────────────────────────────
+
+export const URL_VALIDATION_EVENT = 'url-validation'
+
+/** Body your endpoint must return (HTTP 200) for a URL validation request */
+export interface UrlValidationResponse {
+  plainToken: string
+  /** HMAC-SHA256(secretToken, plainToken), hex */
+  encryptedToken: string
+}
+
+/**
+ * Build the response for Tingee's webhook URL validation request.
+ *
+ * When you save a webhook URL, Tingee sends `{ event: 'url-validation', plainToken, timestamp }`
+ * and expects `{ plainToken, encryptedToken }` back with HTTP 200.
+ * Returns `null` when the body is not a URL validation request -> handle it as a normal webhook.
+ *
+ * @param secretToken Secret token of your active "Webhook verification" API credential
+ *
+ * @example
+ * ```ts
+ * app.post('/webhook/tingee', express.json(), (req, res) => {
+ *   const validation = createUrlValidationResponse(process.env.TINGEE_WEBHOOK_SECRET!, req.body)
+ *   if (validation) return res.json(validation)
+ *   // verify signature & process webhook ...
+ * })
+ * ```
+ */
+export function createUrlValidationResponse(
+  secretToken: string,
+  body: object | string
+): UrlValidationResponse | null {
+  let parsedBody: Record<string, unknown> | null
+  if (typeof body === 'string') {
+    try {
+      parsedBody = JSON.parse(body)
+    } catch {
+      return null
+    }
+  } else {
+    parsedBody = body as Record<string, unknown>
+  }
+
+  if (!parsedBody || parsedBody.event !== URL_VALIDATION_EVENT) return null
+
+  const plainToken = parsedBody.plainToken
+  if (typeof plainToken !== 'string' || !plainToken) return null
+
+  const encryptedToken = createHmac('sha256', secretToken).update(plainToken).digest('hex')
+  return { plainToken, encryptedToken }
+}

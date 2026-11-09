@@ -2,8 +2,8 @@ import { TingeeClientOptions, ENVIRONMENT_URLS, TingeeEnvironment } from './type
 import { TingeeHttpClient } from './http.js'
 import { allMethods, type TingeeAllMethods } from './generated-methods.js'
 import { createCustomMethods, type CustomMethods } from './custom-methods.js'
-import { verifyWebhookSignature } from '../signature/signer.js'
-import type { WebhookVerifyResult } from '../signature/signer.js'
+import { createUrlValidationResponse, verifyWebhookSignature } from '../signature/signer.js'
+import type { UrlValidationResponse, WebhookVerifyResult } from '../signature/signer.js'
 
 export interface TingeeClient extends TingeeAllMethods, CustomMethods { }
 
@@ -46,5 +46,16 @@ export class TingeeClient {
     body: object | string
   ): WebhookVerifyResult {
     return verifyWebhookSignature(this.secretKey, signature, timestamp, body)
+  }
+
+  /**
+   * Build the response for a webhook URL validation request, null if body is not one.
+   * Pass `secretToken` when your "Webhook verification" credential differs from the one used by this client.
+   */
+  createUrlValidationResponse(
+    body: object | string,
+    secretToken: string = this.secretKey
+  ): UrlValidationResponse | null {
+    return createUrlValidationResponse(secretToken, body)
   }
 }

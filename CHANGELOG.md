@@ -1,5 +1,22 @@
 # Changelog — @tingee/sdk-node
 
+## [0.4.0] — 2026-11-09
+
+### Added
+- Method mới: `device.clearScreen`, `device.getFeatures`, `device.notifyOrder`
+- `deepLink.generate`: thêm field `platform` (1 = Android, 2 = iOS)
+
+### Changed (breaking)
+- Field bắt buộc của DTO request được tính lại theo validate thực tế của server. Các field trước đây bị đánh dấu bắt buộc nhầm nay là tuỳ chọn, ví dụ `appType`, `minAmount`, `maxAmount` của `createVa`; `merchantId`, `dataAccess`, `transactionType` của `getVaPaging`; `bankName` của `confirmVa`; `password`, `appType` của `merchant.create`
+- Kiểu TypeScript: các field trên chuyển sang optional (`field?:`), code cũ vẫn biên dịch được
+
+## [0.3.1] — 2026-11-06
+
+### Added
+- Gửi header `User-Agent: tingee-sdk-node/<version> (node/<version>; <platform>)` trong mọi request
+- `createUrlValidationResponse` / `client.createUrlValidationResponse`: tạo response cho request xác thực URL webhook (`event: url-validation`)
+- Export thêm `verifyWebhookSignature`, `URL_VALIDATION_EVENT`
+
 ## [0.3.0] — 2026-08-06
 
 ### Added
